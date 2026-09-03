@@ -1,0 +1,11 @@
+# Environment files
+.env
+*.env
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.catboost_training/
+catboost_info/
+
