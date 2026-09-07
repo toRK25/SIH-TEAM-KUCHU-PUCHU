@@ -1,0 +1,1090 @@
+/* =====================================================
+   KARIGAR KART
+   WELCOME + LOGIN + SIGNUP
+===================================================== */
+
+:root {
+  --cream: #f7f2e9;
+  --cream-light: #fffdfa;
+  --brown: #98521f;
+  --brown-dark: #633519;
+  --dark: #30231c;
+  --grey: #68635e;
+  --border: #d9d3ca;
+}
+
+
+/* =====================================================
+   IMPORTANT RESET
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   WELCOME PAGE
+===================================================== */
+
+.welcome-page {
+  position: relative;
+  width: min(700px, calc(100vw - 32px));
+  min-height: 900px;
+  margin: 20px auto;
+
+  padding: 45px 55px 50px;
+
+  background-image: url("../assets/KarigarKart_Background_HD.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border: 1px solid #d8cec1;
+  border-radius: 24px;
+
+  box-shadow:
+    0 12px 35px rgba(72, 55, 40, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   WELCOME GLOW
+===================================================== */
+
+.welcome-page .soft-glow {
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  top: 100px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: rgba(215, 157, 90, 0.07);
+
+  filter: blur(80px);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =====================================================
+   WELCOME LOGO
+===================================================== */
+
+.welcome-page .welcome-logo {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+
+/* LARGE DIYA ONLY ON WELCOME */
+
+.welcome-page .diya-logo {
+  width: 400px;
+  height: 400px;
+
+  margin: 0 auto 5px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.welcome-page .diya-logo img {
+  width: 400px;
+  height: 400px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =====================================================
+   WELCOME BRAND NAME
+===================================================== */
+
+.welcome-page .welcome-logo h1 {
+  margin: 5px 0 0;
+
+  font-family:
+    "DM Sans",
+    Arial,
+    sans-serif;
+
+  font-size: 56px;
+
+  line-height: 1;
+
+  letter-spacing: 4px;
+
+  font-weight: 700;
+
+  color: #292929;
+}
+
+.welcome-page .welcome-logo h1 span {
+  color: var(--brown);
+}
+
+
+/* =====================================================
+   WELCOME DIVIDER
+===================================================== */
+
+.welcome-page .brand-divider {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin: 22px auto 14px;
+
+  width: 440px;
+
+  max-width: 85%;
+}
+
+.welcome-page .brand-divider span {
+  flex: 1;
+
+  height: 1px;
+
+  background: #a37a59;
+}
+
+.welcome-page .brand-divider b {
+  font-size: 16px;
+
+  color: var(--brown);
+}
+
+
+/* =====================================================
+   WELCOME TAGLINE
+===================================================== */
+
+.welcome-page .brand-tagline {
+  margin: 0;
+
+  letter-spacing: 6px;
+
+  font-size: 13px;
+
+  color: #343434;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   WELCOME DESCRIPTION
+===================================================== */
+
+.welcome-page .welcome-description {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top: 65px;
+
+  font-size: 25px;
+
+  line-height: 1.7;
+
+  color: #1d1d1d;
+
+  text-align: center;
+}
+
+.welcome-page .welcome-description p {
+  margin: 0;
+}
+
+
+/* =====================================================
+   WELCOME GET STARTED
+===================================================== */
+
+.welcome-page .get-started-btn {
+  position: relative;
+
+  z-index: 10;
+
+  width: 370px;
+
+  height: 76px;
+
+  margin-top: 135px;
+
+  border: none;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #a75a25,
+      #914916
+    );
+
+  color: white;
+
+  font-size: 25px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 40px;
+
+  box-shadow:
+    0 12px 25px rgba(91, 47, 21, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.welcome-page .get-started-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 16px 30px rgba(91, 47, 21, 0.28);
+}
+
+.welcome-page .button-arrow {
+  font-size: 36px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   WELCOME LOGIN
+===================================================== */
+
+.welcome-page .welcome-login {
+  position: relative;
+
+  z-index: 10;
+
+  text-align: center;
+
+  margin-top: 42px;
+}
+
+.welcome-page .welcome-login p {
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #282421;
+}
+
+.welcome-page .welcome-login-btn {
+  margin-top: 12px;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--brown);
+
+  font-size: 23px;
+
+  font-weight: 600;
+
+  text-decoration: underline;
+
+  text-underline-offset: 7px;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   WELCOME TINY DECORATION
+===================================================== */
+
+.welcome-page .tiny-decoration {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 24px;
+}
+
+.welcome-page .tiny-decoration span {
+  width: 85px;
+
+  height: 1px;
+
+  background: #c5aa91;
+}
+
+.welcome-page .tiny-decoration b {
+  color: #c09a76;
+
+  font-size: 13px;
+}
+
+
+
+/* =====================================================
+   LOGIN + SIGNUP PAGE
+===================================================== */
+
+.auth-page {
+  min-height: 100vh;
+
+  width: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fbf8f2 0%,
+      #f7f2e9 100%
+    );
+
+  padding: 30px;
+
+  color: #2e2925;
+
+  position: relative;
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.auth-page .back-button {
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  font-size: 17px;
+
+  color: #26221f;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+.auth-page .back-button span {
+  font-size: 28px;
+
+  line-height: 0;
+}
+
+
+/* =====================================================
+   AUTH CARD
+===================================================== */
+
+.auth-page .auth-card {
+  width: min(450px, calc(100vw - 40px));
+
+  margin: 30px auto 0;
+
+  background:
+    rgba(255, 253, 249, 0.96);
+
+  border:
+    1px solid #e0d9cf;
+
+  border-radius: 19px;
+
+  padding:
+    28px 28px 31px;
+
+  box-shadow:
+    0 8px 25px rgba(55, 38, 25, 0.08);
+
+  text-align: center;
+}
+
+
+/* =====================================================
+   AUTH DIYA
+   SMALLER THAN WELCOME
+===================================================== */
+
+.auth-page .diya-logo {
+  width: 75px;
+
+  height: 75px;
+
+  margin: 0 auto 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.auth-page .diya-logo img {
+  width: 75px;
+
+  height: 75px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =====================================================
+   AUTH HEADING
+===================================================== */
+
+.auth-page .auth-card h1 {
+  margin:
+    0 0 5px;
+
+  font-size: 30px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  color: #2e211a;
+}
+
+
+/* =====================================================
+   AUTH SUBTITLE
+===================================================== */
+
+.auth-page .auth-subtitle {
+  margin:
+    0 0 28px;
+
+  font-size: 17px;
+
+  color: #66605a;
+}
+
+
+/* =====================================================
+   INPUT GROUP
+===================================================== */
+
+.auth-page .input-group {
+  text-align: left;
+
+  margin-bottom: 20px;
+}
+
+.auth-page .input-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #171412;
+}
+
+
+/* =====================================================
+   INPUT WRAPPER
+===================================================== */
+
+.auth-page .input-wrapper {
+  height: 50px;
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  border:
+    1px solid #d8d2ca;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-page .input-wrapper:focus-within {
+  border-color: #9b5b31;
+
+  box-shadow:
+    0 0 0 3px rgba(155, 91, 49, 0.08);
+}
+
+
+/* =====================================================
+   INPUT ICON
+===================================================== */
+
+.auth-page .input-icon {
+  width: 42px;
+
+  min-width: 42px;
+
+  text-align: center;
+
+  color: #88837e;
+
+  font-size: 17px;
+}
+
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.auth-page .input-wrapper input {
+  width: 100%;
+
+  height: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  padding: 0 10px;
+
+  font-size: 15px;
+
+  color: #30231c;
+}
+
+.auth-page .input-wrapper input::placeholder {
+  color: #999691;
+}
+
+
+
+
+
+/* =====================================================
+   AUTH MAIN BUTTON
+===================================================== */
+
+.auth-page .auth-main-button {
+  width: 100%;
+
+  height: 52px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #a65a24,
+      #914914
+    );
+
+  color: #fff;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 8px rgba(94, 48, 18, 0.13);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.auth-page .auth-main-button:hover {
+  background: #84410f;
+
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   OR DIVIDER
+===================================================== */
+
+.auth-page .or-divider {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin: 24px 0 18px;
+}
+
+.auth-page .or-divider span {
+  flex: 1;
+
+  height: 1px;
+
+  background: #d8d3cd;
+}
+
+.auth-page .or-divider p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #59534e;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   GOOGLE BUTTON
+===================================================== */
+
+.auth-page .google-button {
+  width: 100%;
+
+  height: 50px;
+
+  border:
+    1px solid #d8d3cd;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  font-size: 16px;
+
+  color: #292522;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 12px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-page .google-button:hover {
+  background: #fafafa;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.auth-page .google-g {
+  font-size: 21px;
+
+  font-weight: 700;
+
+  color: #4285f4;
+}
+
+
+/* =====================================================
+   BOTTOM AUTH TEXT
+===================================================== */
+
+.auth-page .bottom-auth-text {
+  margin:
+    27px 0 3px;
+
+  font-size: 14px;
+
+  color: #3d3935;
+}
+
+.auth-page .bottom-auth-text button {
+  border: none;
+
+  background: transparent;
+
+  color: #914b20;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  padding: 0 0 0 4px;
+}
+
+
+/* =====================================================
+   SIGNUP PAGE
+===================================================== */
+
+.auth-page.signup-page {
+  padding-top: 30px;
+}
+
+.auth-page.signup-page .auth-card {
+  margin-top: 25px;
+
+  padding-top: 23px;
+}
+
+.auth-page.signup-page .auth-subtitle {
+  margin-bottom: 24px;
+}
+
+.auth-page.signup-page .input-group {
+  margin-bottom: 15px;
+}
+
+
+/* =====================================================
+   TERMS
+===================================================== */
+
+.auth-page .terms {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  text-align: left;
+
+  margin:
+    8px 0
+    23px;
+
+  font-size: 13px;
+
+  color: #45403b;
+
+  cursor: pointer;
+}
+
+.auth-page .terms input {
+  width: 18px;
+
+  height: 18px;
+
+  accent-color: var(--brown);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  /* Welcome */
+
+  .welcome-page {
+    width: calc(100vw - 24px);
+
+    min-height: calc(100vh - 24px);
+
+    margin: 12px auto;
+
+    padding:
+      35px 20px
+      40px;
+  }
+
+  .welcome-page .diya-logo {
+    width: 150px;
+
+    height: 150px;
+  }
+
+  .welcome-page .diya-logo img {
+    width: 150px;
+
+    height: 150px;
+  }
+
+  .welcome-page .welcome-logo h1 {
+    font-size: 40px;
+
+    letter-spacing: 3px;
+  }
+
+  .welcome-page .brand-divider {
+    width: 300px;
+  }
+
+  .welcome-page .brand-tagline {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+  }
+
+  .welcome-page .welcome-description {
+    margin-top: 50px;
+
+    font-size: 19px;
+  }
+
+  .welcome-page .get-started-btn {
+    width: 85%;
+
+    height: 65px;
+
+    margin-top: 90px;
+
+    font-size: 20px;
+
+    gap: 30px;
+  }
+
+  .welcome-page .welcome-login p {
+    font-size: 17px;
+  }
+
+  .welcome-page .welcome-login-btn {
+    font-size: 20px;
+  }
+
+  .welcome-page .pottery {
+    opacity: 0.35;
+
+    transform: scale(0.75);
+  }
+
+
+  /* Auth */
+
+  .auth-page {
+    padding: 25px 16px;
+  }
+
+  .auth-page .auth-card {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding:
+      25px 20px
+      28px;
+  }
+
+  .auth-page .auth-card h1 {
+    font-size: 27px;
+  }
+
+  .auth-page .auth-subtitle {
+    font-size: 15px;
+  }
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .welcome-page {
+    padding:
+      28px 15px
+      35px;
+  }
+
+  .welcome-page .welcome-logo h1 {
+    font-size: 34px;
+
+    letter-spacing: 2px;
+  }
+
+  .welcome-page .brand-tagline {
+    font-size: 8px;
+  }
+
+  .welcome-page .welcome-description {
+    font-size: 17px;
+  }
+
+  .auth-page .auth-card {
+    padding:
+      23px 17px
+      25px;
+  }
+
+  .auth-page .auth-card h1 {
+    font-size: 25px;
+  }
+}
+/* for loaction of state and cities */
+.location-select {
+  width: 100%;
+}
+
+.location-select .location__control {
+  width: 100%;
+}
+
+.location-select .location__value-container {
+  padding-left: 0;
+}
+
+
+/* ================================
+   State & City Select
+================================ */
+
+.location-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Icon */
+.location-input-wrapper .input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  color: #918c87;
+  pointer-events: none;
+}
+
+/* React Select */
+.location-select {
+  width: 100%;
+}
+
+/* Main box */
+.location-select .location__control {
+  width: 100%;
+  height: 62px;
+  min-height: 62px;
+
+  border: 1px solid #d8d0c8;
+  border-radius: 14px;
+
+  background: white;
+
+  box-shadow: none;
+
+  font-size: 18px;
+
+  cursor: pointer;
+}
+
+/* Focus */
+.location-select .location__control--is-focused {
+  border: 1px solid #b45b20;
+  box-shadow: 0 0 0 3px rgba(180, 91, 32, 0.10);
+}
+
+/* Hover */
+.location-select .location__control:hover {
+  border-color: #b45b20;
+}
+
+/* Text area */
+.location-select .location__value-container {
+  padding-left: 52px;
+  padding-right: 45px;
+}
+
+/* Placeholder */
+.location-select .location__placeholder {
+  color: #999;
+}
+
+/* Selected value */
+.location-select .location__single-value {
+  color: #222;
+}
+
+/* Dropdown arrow area */
+.location-select .location__indicators {
+  height: 100%;
+}
+
+/* Dropdown */
+.location-select .location__menu {
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* Dropdown options */
+.location-select .location__option {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #222;
+}
+
+.location-select .location__option--is-focused {
+  background-color: #f7eadf;
+}
+
+.location-select .location__option--is-selected {
+  background-color: #b45b20;
+  color: white;
+}
