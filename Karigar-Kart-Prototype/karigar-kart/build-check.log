@@ -1,0 +1,64 @@
+
+> karigar-kart@0.1.0 prebuild
+> npm run check:runtime
+
+
+> karigar-kart@0.1.0 check:runtime
+> node scripts/check-mobile-runtime.mjs
+
+Mobile runtime integrity check passed (28 protected files).
+
+> karigar-kart@0.1.0 build
+> tsc && vite build && node scripts/prepare-sites-build.mjs
+
+vite v8.1.3 building client environment for production...
+[2Ktransforming...✓ 5055 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/index.html                                                   0.41 kB │ gzip:   0.27 kB
+dist/client/assets/nunito-sans-vietnamese-400-normal-V2dSmW1H.woff2      5.28 kB
+dist/client/assets/nunito-sans-vietnamese-700-normal-CZwaiz_e.woff2      5.28 kB
+dist/client/assets/nunito-sans-vietnamese-600-normal-DD7cNabE.woff2      5.35 kB
+dist/client/assets/nunito-sans-vietnamese-800-normal-CfdX2BhI.woff2      5.37 kB
+dist/client/assets/nunito-sans-cyrillic-700-normal-BJ2iHHyS.woff2        7.12 kB
+dist/client/assets/nunito-sans-cyrillic-400-normal-DUb-KqT8.woff2        7.18 kB
+dist/client/assets/nunito-sans-cyrillic-600-normal-D4TuIAT6.woff2        7.18 kB
+dist/client/assets/nunito-sans-cyrillic-800-normal-COys2OwR.woff2        7.24 kB
+dist/client/assets/nunito-sans-vietnamese-700-normal-BwTSkH1V.woff       7.34 kB
+dist/client/assets/nunito-sans-vietnamese-400-normal-D5dwM7ZL.woff       7.37 kB
+dist/client/assets/nunito-sans-vietnamese-600-normal-BW3IEr32.woff       7.41 kB
+dist/client/assets/nunito-sans-vietnamese-800-normal-hO2TqS3m.woff       7.41 kB
+dist/client/assets/nunito-sans-cyrillic-ext-700-normal-GO46tfsI.woff2    8.89 kB
+dist/client/assets/nunito-sans-cyrillic-ext-400-normal-El6lRT8b.woff2    8.90 kB
+dist/client/assets/nunito-sans-cyrillic-ext-600-normal-CVjnjZn6.woff2    8.96 kB
+dist/client/assets/nunito-sans-cyrillic-700-normal-DG2UZxR9.woff         8.98 kB
+dist/client/assets/nunito-sans-cyrillic-400-normal-DDHmqnIJ.woff         9.04 kB
+dist/client/assets/nunito-sans-cyrillic-600-normal-CKMyzy87.woff         9.04 kB
+dist/client/assets/nunito-sans-cyrillic-ext-800-normal-suUH8DVf.woff2    9.06 kB
+dist/client/assets/nunito-sans-cyrillic-800-normal-x7mxdBjZ.woff         9.08 kB
+dist/client/assets/nunito-sans-cyrillic-ext-700-normal-Cqve7k0J.woff    11.38 kB
+dist/client/assets/nunito-sans-cyrillic-ext-400-normal-fk07B0hk.woff    11.42 kB
+dist/client/assets/nunito-sans-cyrillic-ext-600-normal-DZXkk6dX.woff    11.48 kB
+dist/client/assets/nunito-sans-cyrillic-ext-800-normal-DlIrhRQ2.woff    11.50 kB
+dist/client/assets/nunito-sans-latin-ext-400-normal-BoHsJHPR.woff2      13.70 kB
+dist/client/assets/nunito-sans-latin-ext-700-normal-DBq_Pukt.woff2      13.72 kB
+dist/client/assets/nunito-sans-latin-ext-600-normal-nHO2odcJ.woff2      13.76 kB
+dist/client/assets/nunito-sans-latin-700-normal-CICRJDmU.woff2          13.83 kB
+dist/client/assets/nunito-sans-latin-ext-800-normal-DWckPAf3.woff2      13.86 kB
+dist/client/assets/nunito-sans-latin-800-normal-MgCk9Q3Y.woff2          13.87 kB
+dist/client/assets/nunito-sans-latin-400-normal-AkRraKH2.woff2          13.89 kB
+dist/client/assets/nunito-sans-latin-600-normal-BtVRvDNj.woff2          14.00 kB
+dist/client/assets/nunito-sans-latin-700-normal-CLVG92B9.woff           17.40 kB
+dist/client/assets/nunito-sans-latin-400-normal-DY9yCUyQ.woff           17.51 kB
+dist/client/assets/nunito-sans-latin-800-normal-DOf_K5Iw.woff           17.52 kB
+dist/client/assets/nunito-sans-latin-600-normal-DLks-Kj1.woff           17.64 kB
+dist/client/assets/nunito-sans-latin-ext-700-normal-jHN8vCOt.woff       18.48 kB
+dist/client/assets/nunito-sans-latin-ext-400-normal-CHwj-NZB.woff       18.54 kB
+dist/client/assets/nunito-sans-latin-ext-600-normal-DEh-VjuY.woff       18.58 kB
+dist/client/assets/nunito-sans-latin-ext-800-normal-DG0lbXwA.woff       18.62 kB
+dist/client/assets/roboto-latin-500-normal-DQZyH_nt.woff                21.92 kB
+dist/client/assets/roboto-latin-500-normal-7RbcRiD8.woff2               22.20 kB
+dist/client/assets/index-DZ-NWwxx.css                                   30.39 kB │ gzip:   6.96 kB
+dist/client/assets/index-Doz2IDlL.js                                   535.38 kB │ gzip: 163.39 kB
+
+✓ built in 859ms
