@@ -1,0 +1,226 @@
+# Indian Artisan Fair-Price Prediction System
+
+## 1. Overview
+
+The **Indian Artisan Fair-Price Prediction System** is an AI-powered pricing recommendation system designed to help Indian artisans determine fair and competitive prices for handmade and traditional products.
+
+Artisans often underprice their work because they lack current market information or fail to consider labor and platform costs. The system solves this by combining:
+
+1. **Cost-Based Pricing** – Calculates the minimum sustainable selling price.
+2. **Live Market Analysis** – Compares prices of similar products available online.
+3. **Machine Learning** – Predicts realistic low, median, and high market prices.
+
+The final output is a **recommended fair-price range in Indian Rupees (₹).**
+
+---
+
+## 2. Project Structure
+
+```text
+Indian Artisan Fair-Price Prediction System
+│
+├── app.py       → FastAPI Web API & CLI
+└── model.py     → ML Models & Pricing Engine
+```
+
+---
+
+## 3. Main Components
+
+### A. Cost Engine
+
+The **CostEngine** calculates the minimum price below which the artisan should not sell.
+
+**Formulas:**
+
+```text
+Labor Cost = Labor Hours × Hourly Wage
+
+Base Cost = Material Cost + Labor Cost
+
+Cost Floor = Base Cost / (1 - Platform Fee %)
+```
+
+Example:
+
+```text
+Material Cost = ₹350
+Labor Hours = 5
+Hourly Wage = ₹250
+Platform Fee = 15%
+
+Labor Cost = 5 × ₹250 = ₹1,250
+Base Cost = ₹350 + ₹1,250 = ₹1,600
+Cost Floor = ₹1,600 / 0.85 = ₹1,882.35
+```
+
+The system also applies a **20% profit-margin safety envelope** to the recommended median price.
+
+---
+
+### B. Feature Extractor
+
+The **FeatureExtractor** analyzes product titles and descriptions to identify traditional materials and techniques.
+
+**Materials:** Brass, Copper, Chanderi Silk, Banarasi Silk, Sandalwood, Terracotta, etc.
+
+**Techniques:** Dhokra, Bidriware, Madhubani, Chikankari, Ajrakh, Kalamkari, etc.
+
+These features are converted into structured inputs for the ML model.
+
+---
+
+### C. Live Market Competitor Matcher
+
+The **SerperCompMatcher** searches Google Shopping through the Serper API to find similar products currently available online.
+
+It uses **TF-IDF and cosine similarity** to identify relevant listings and calculates:
+
+* Market Median
+* P25 (25th percentile)
+* P75 (75th percentile)
+
+This provides current market-price information.
+
+---
+
+### D. Machine Learning Model
+
+The **CatBoostQuantileModel** predicts different price levels:
+
+| Quantile | Meaning               |
+| -------- | --------------------- |
+| P15      | Lower expected price  |
+| P50      | Median/typical price  |
+| P85      | Higher expected price |
+
+Supported models include:
+
+* CatBoost
+* LightGBM
+* XGBoost
+
+Example:
+
+```text
+P15 = ₹1,900
+P50 = ₹2,400
+P85 = ₹3,100
+```
+
+---
+
+### E. Price Prediction Orchestrator
+
+The **ArtisanPricePredictor** combines all components:
+
+```text
+Product Details
+      ↓
+Cost Floor Calculation
+      ↓
+ML Price Prediction
+      ↓
+Live Market Search
+      ↓
+50% ML + 50% Market Data
+      ↓
+Cost Safety Check
+      ↓
+Final Fair Price Range
+```
+
+The system ensures that the recommended price does not fall below the artisan's sustainable cost.
+
+
+
+
+These metrics help determine which ML model provides the most accurate predictions.
+
+---
+
+## 4. FastAPI Application
+
+The application is built using FastAPI 
+
+### Main Endpoints
+
+**`POST /api/predict`**
+Accepts product details and returns the recommended price range.
+
+**`GET /api/evaluate`**
+Runs model performance evaluation.
+
+**`GET /health`**
+Checks API and API-key status.
+
+**`GET /docs`**
+Provides interactive Swagger API documentation.
+
+The system can also be run directly through a **command-line interface (CLI).**
+
+---
+
+## 5. Complete Prediction Example
+
+### Input
+
+```text
+Product: Dhokra Brass Peacock
+Material Cost: ₹350
+Labor Hours: 5
+Hourly Wage: ₹250
+Platform Fee: 15%
+```
+
+### Cost Calculation
+
+```text
+Labor Cost = ₹1,250
+Base Cost = ₹1,600
+Cost Floor = ₹1,882.35
+```
+
+### ML Prediction
+
+```text
+P15 = ₹1,900
+P50 = ₹2,400
+P85 = ₹3,100
+```
+
+### Live Market
+
+Similar products are found online around **₹2,000–₹2,800**.
+
+The system blends ML and market data and applies the cost safety check.
+
+### Final Output
+
+```text
+Recommended Fair Price
+
+Low:     ₹2,050
+Median:  ₹2,500
+High:    ₹3,150
+```
+
+---
+
+## 6. Key Benefits
+
+The system helps artisans:
+
+* Avoid underpricing their products
+* Account for material and labor costs
+* Consider platform fees
+* Compare current market prices
+* Use ML-based price predictions
+* Get a flexible low-to-high price range
+* Make more informed and sustainable pricing decisions
+
+### Objective
+
+The goal is to provide Indian artisans with a **data-driven pricing assistant** that balances their production costs, craftsmanship, and current market conditions to recommend a fair selling price.
+
+

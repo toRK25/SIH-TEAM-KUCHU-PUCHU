@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Fair Price Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f0e8 0%, #e8dfd4 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        h1 {
+            color: #8b4513;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0522d;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(139, 69, 19, 0.15);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #5d4037;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0d8d0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #8b4513;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .slider-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #faf8f5;
+            border-radius: 12px;
+            border: 1px solid #e8dfd4;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            height: 60px;
+        }
+
+        .slider-track {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff6b35, #f7931e, #4caf50);
+            border-radius: 3px;
+            transform: translateY(-50%);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            font-size: 0.85rem;
+            color: #8d6e63;
+        }
+
+        .slider-labels span {
+            font-weight: 600;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            top: 50%;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 3px solid #8b4513;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+            transition: transform 0.1s;
+        }
+
+        .slider-thumb:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+
+        .slider-thumb.dragging {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .price-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .price-box {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .price-box:hover {
+            transform: translateY(-4px);
+        }
+
+        .price-box.low {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ffb74d;
+        }
+
+        .price-box.median {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #64b5f6;
+        }
+
+        .price-box.high {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid #81c784;
+        }
+
+        .price-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6d4c41;
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .price-box.low .price-value {
+            color: #e65100;
+        }
+
+        .price-box.median .price-value {
+            color: #1565c0;
+        }
+
+        .price-box.high .price-value {
+            color: #2e7d32;
+        }
+
+        .user-price-box {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border: 2px solid #f06292;
+        }
+
+        .user-price-box .price-value {
+            color: #c2185b;
+        }
+
+        .breakdown {
+            margin-top: 25px;
+            padding: 20px;
+            background: #faf8f5;
+            border-radius: 12px;
+        }
+
+        .breakdown h3 {
+            color: #5d4037;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8dfd4;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            color: #8d6e63;
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            color: #4e342e;
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .predict-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0d8d0;
+            border-top-color: #8b4513;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            background: #fff3f3;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .info-box {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #1b5e20;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .price-display {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Artisan Fair Price Predictor</h1>
+            <p class="subtitle">Indian Handicrafts • Quantile Regression + Live Market Data + Cost Safety</p>
+        </header>
+
+
+
+        <div class="error" id="error"></div>
+
+        <div class="input-group">
+            <label for="title">Craft Title / Description</label>
+            <input type="text" id="title" placeholder="">
+        </div>
+
+        <div class="row">
+            <div class="input-group">
+                <label for="materialsCost">Raw Materials Cost (₹)</label>
+                <input type="number" id="materialsCost" min="0" step="10">
+            </div>
+            <div class="input-group">
+                <label for="laborHours">Labor Hours Invested</label>
+                <input type="number" id="laborHours" min="0.5" step="0.5">
+            </div>
+        </div>
+
+        <button class="predict-btn" id="predictBtn" onclick="predict()">Predict Fair Price</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Fetching live market data & running prediction...</p>
+        </div>
+    </div>
+
+    <div class="card" id="resultsCard" style="display: none;">
+        <h2 style="color: #5d4037; margin-bottom: 20px;">📊 Recommended Price Range</h2>
+
+        <div class="price-display" id="priceDisplay">
+            <div class="price-box low">
+                <div class="price-label">Low (P15)</div>
+                <div class="price-value" id="priceLow">₹0</div>
+            </div>
+            <div class="price-box median">
+                <div class="price-label">Median (P50)</div>
+                <div class="price-value" id="priceMedian">₹0</div>
+            </div>
+            <div class="price-box high">
+                <div class="price-label">High (P85)</div>
+                <div class="price-value" id="priceHigh">₹0</div>
+            </div>
+        </div>
+
+        <div class="slider-container">
+            <p style="font-weight: 600; color: #5d4037; margin-bottom: 15px;">🎯 Set Your Selling Price</p>
+            <p style="color: #8d6e63; font-size: 0.9rem; margin-bottom: 15px;">Drag the slider to choose your price
+                between Low and High. See where your price falls in the recommended range.</p>
+            <div class="slider-wrapper" id="sliderWrapper">
+                <div class="slider-track"></div>
+                <div class="slider-thumb" id="sliderThumb"></div>
+            </div>
+            <div class="slider-labels">
+                <span id="sliderLow">₹0</span>
+                <span id="sliderMid">₹0</span>
+                <span id="sliderHigh">₹0</span>
+            </div>
+            <div style="margin-top: 15px; text-align: center;">
+                <span style="font-size: 1.2rem; font-weight: 600; color: #c2185b;">Your Price: <span
+                        id="userPrice">₹0</span></span>
+            </div>
+        </div>
+
+        <div class="breakdown">
+            <h3>💰 Cost Breakdown</h3>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Materials Cost</span>
+                <span class="breakdown-value" id="costMaterials">₹0</span>
+            </div>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Labor Cost (@₹250/hr)</span>
+                <span class="breakdown-value" id="costLabor">₹0</span>
+            </div>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Cost Floor (with 15% platform fee)</span>
+                <span class="breakdown-value" id="costFloor">₹0</span>
+            </div>
+        </div>
+
+        <div class="breakdown" style="margin-top: 15px;">
+            <h3>📈 Model Details</h3>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Live Competitors Found</span>
+                <span class="breakdown-value" id="compCount">0</span>
+            </div>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Market Median Price</span>
+                <span class="breakdown-value" id="compMedian">₹0</span>
+            </div>
+            <div class="breakdown-item">
+                <span class="breakdown-label">Safety Envelope Applied</span>
+                <span class="breakdown-value" id="safetyApplied">No</span>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+    </div>
+
+    <script>
+        let predictionData = null;
+        let isDragging = false;
+
+        const sliderWrapper = document.getElementById('sliderWrapper');
+        const sliderThumb = document.getElementById('sliderThumb');
+
+        sliderThumb.addEventListener('mousedown', startDrag);
+        sliderThumb.addEventListener('touchstart', startDrag, { passive: false });
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+
+        function startDrag(e) {
+            if (!predictionData) return;
+            isDragging = true;
+            sliderThumb.classList.add('dragging');
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging || !predictionData) return;
+            const rect = sliderWrapper.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let percent = (clientX - rect.left) / rect.width;
+            percent = Math.max(0, Math.min(1, percent));
+            updateSlider(percent);
+            e.preventDefault();
+        }
+
+        function endDrag() {
+            isDragging = false;
+            sliderThumb.classList.remove('dragging');
+        }
+
+        function updateSlider(percent) {
+            sliderThumb.style.left = `${percent * 100}%`;
+            const low = predictionData.priceRange.low;
+            const high = predictionData.priceRange.high;
+            const userPrice = low + (high - low) * percent;
+            document.getElementById('userPrice').textContent = formatINR(userPrice);
+        }
+
+        function formatINR(amount) {
+            return '₹' + amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        async function predict() {
+            const title = document.getElementById('title').value.trim();
+            const materialsCost = parseFloat(document.getElementById('materialsCost').value);
+            const laborHours = parseFloat(document.getElementById('laborHours').value);
+
+            if (!title || isNaN(materialsCost) || isNaN(laborHours)) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            const btn = document.getElementById('predictBtn');
+            const loading = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            const resultsCard = document.getElementById('resultsCard');
+
+            btn.disabled = true;
+            btn.textContent = 'Predicting...';
+            loading.style.display = 'block';
+            errorDiv.style.display = 'none';
+            resultsCard.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, materials_cost: materialsCost, labor_hours: laborHours })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.detail || 'Prediction failed');
+                }
+
+                const data = await response.json();
+                predictionData = data;
+                displayResults(data);
+                resultsCard.style.display = 'block';
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Predict Fair Price';
+                loading.style.display = 'none';
+            }
+        }
+
+        function showError(msg) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+        }
+
+        function displayResults(data) {
+            const range = data.recommended_price_range_formatted;
+            const breakdown = data.cost_breakdown;
+            const comps = data.live_comps_summary;
+            const raw = data.raw_ml_quantiles_formatted;
+
+            document.getElementById('priceLow').textContent = range.low;
+            document.getElementById('priceMedian').textContent = range.median;
+            document.getElementById('priceHigh').textContent = range.high;
+
+            document.getElementById('sliderLow').textContent = range.low;
+            document.getElementById('sliderMid').textContent = range.median;
+            document.getElementById('sliderHigh').textContent = range.high;
+
+            const lowVal = data.recommended_price_range_formatted.low.replace(/[₹,]/g, '');
+            const highVal = data.recommended_price_range_formatted.high.replace(/[₹,]/g, '');
+            const medianVal = data.recommended_price_range_formatted.median.replace(/[₹,]/g, '');
+
+            predictionData.priceRange = {
+                low: parseFloat(lowVal),
+                median: parseFloat(medianVal),
+                high: parseFloat(highVal)
+            };
+
+            updateSlider(0.5);
+
+            document.getElementById('costMaterials').textContent = breakdown.materials_cost_formatted;
+            document.getElementById('costLabor').textContent = breakdown.labor_cost_formatted;
+            document.getElementById('costFloor').textContent = breakdown.net_cost_floor_formatted;
+
+            document.getElementById('compCount').textContent = comps.comp_count;
+            document.getElementById('compMedian').textContent = comps.comp_median_formatted;
+            document.getElementById('safetyApplied').textContent = data.safety_envelope_applied ? 'Yes (price adjusted up to cost floor)' : 'No';
+        }
+
+        document.getElementById('predictBtn').addEventListener('click', predict);
+    </script>
+</body>
+
+</html>

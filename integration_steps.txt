@@ -1,0 +1,63 @@
+Integration Steps 
+
+
+1. SET UP THE BACKEND API SERVER
+# Install dependencies
+pip install fastapi uvicorn catboost lightgbm xgboost scikit-learn pandas numpy requests python-dotenv
+
+# Configure SerperAPI key (required for live market data)
+echo "SERPER_API_KEY=your_serper_api_key_here" > .env
+# Get key from https://serper.dev
+
+2. RUN THE API SERVER
+
+python app.py --server
+# Server runs at http://localhost:8000
+# API endpoint: POST http://localhost:8000/api/predict
+# Docs: http://localhost:8000/docs
+
+3. INTEGRATE INTO YOUR WEBSITE
+
+ Direct API calls from your frontend
+async function predictPrice(title, materialsCost, laborHours) {
+  const response = await fetch('http://localhost:8000/api/predict', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, materials_cost: materialsCost, labor_hours: laborHours })
+  });
+  return response.json();
+}
+
+// Example usage
+const result = await predictPrice("Dhokra Brass Peacock", 350, 5);
+console.log(result.recommended_price_range_formatted);
+// { low: "₹1,250.00", median: "₹1,850.00", high: "₹2,650.00" }
+
+Option B: Embed the existing UI (simplest)
+<iframe src="http://localhost:8000/" width="100%" height="800px" frameborder="0"></iframe>
+
+
+
+
+5. KEY API CONTRACT
+-------------------
+Request:
+POST /api/predict
+{
+  "title": "Chanderi Silk Saree",
+  "materials_cost": 1800,
+  "labor_hours": 14
+}
+
+Response:
+{
+  "currency": "₹",
+  "cost_breakdown": { "materials_cost_formatted": "₹1,800.00", ... },
+  "recommended_price_range_formatted": {
+    "low": "₹6,200.00",
+    "median": "₹8,500.00",
+    "high": "₹12,000.00"
+  },
+  "live_comps_summary": { "comp_count": 12, "comp_median_formatted": "₹9,200.00" },
+  "safety_envelope_applied": false
+}
