@@ -1,4 +1,4 @@
-import { addProductToSupabase, ProductInput } from './lib/productservices';
+import { addProductToSupabase, uploadProductImage, ProductInput } from './lib/productservices';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Microphone, Camera, VideoCamera, Storefront, House, Bag, ChatCircleDots, User, Globe, Bell, Package, ChartBar, ArrowLeft, ArrowRight, CaretRight, Check, Plus, PencilSimple, Stop, UploadSimple, Sun, Crosshair, Image as ImageIcon, SignOut, Question, X, CheckCircle, Eye, Sparkle, QrCode, ChatText, Info, Phone, LockKey } from '@phosphor-icons/react';
 import { MobileScroll, KeyboardInput, KeyboardTextarea, useKeyboard, useKeyboardInsets, BottomSheet } from './mobile';
@@ -139,8 +139,59 @@ export default function Prototype(){
  },[language,page,notice]);
  const demoVoice=()=>{setRecording(false);setBusy(true);setTimeout(()=>{setProduct({...sample,material:'',craft:'',photo:product.photo||'/assets/basket.png',minimum:'',price:'',quantity:'',delivery:''});setBusy(false);go('Check Details')},900)};
  const start=()=>{setEditingIndex(null);setProduct({...blank});setVoiceText('');setHindiTranslation('');setEnglishTranslation('');setTyped(false);setEnhanced(false);setSelectedPhoto('original');setSeconds(0);go('Add Photos')};
- const save=(status:string)=>{const saved={...product,status};setProducts(ps=>editingIndex===null?[saved,...ps]:ps.map((p,i)=>i===editingIndex?saved:p));setEditingIndex(null);setProduct(saved);if(status==='Live')go('Published');else {tab('Products');tell('Draft saved. Continue whenever you are ready.')}};
- const workflow=['Add Photos','Photo Review','Tell Your Story','Check Details','Listing Preview','Smart Pricing','Pricing Preview','Final Review']; const stage=workflow.includes(page)? page==='Add Photos'||page==='Photo Review'?1:page==='Tell Your Story'?2:page==='Check Details'?3:4:0;
+//  const save=(status:string)=>{const saved={...product,status};setProducts(ps=>editingIndex===null?[saved,...ps]:ps.map((p,i)=>i===editingIndex?saved:p));setEditingIndex(null);setProduct(saved);if(status==='Live')go('Published');else {tab('Products');tell('Draft saved. Continue whenever you are ready.')}};
+const save = async (status: string, imageFile?: File) => {
+  let uploadedImageUrl = product.photo || '';
+
+  // 1. Upload image to Supabase Storage if a new file was provided
+ if (imageFile) {
+  const uploadResult = await uploadProductImage(imageFile);
+  if (!uploadResult.success) {
+    tell(`Failed to upload image: ${uploadResult.error.message}`);
+    return;
+  }
+  // Fall back to empty string or existing photo URL if data is undefined
+  uploadedImageUrl = uploadResult.data ?? ''; 
+}
+
+  // 2. Prepare payload with updated image URL & status
+  const productToSave = {
+    ...product,
+    status,
+    photo: uploadedImageUrl
+  };
+
+  // 3. Save to Supabase Database (Replace artisanId with real logged-in user ID)
+  const currentArtisanId = "123e4567-e89b-12d3-a456-426614174000";
+  const result = await addProductToSupabase(productToSave, currentArtisanId);
+
+  if (!result.success) {
+    tell(`Failed to save to database: ${result.error?.message || 'Unknown error'}`);
+    return;
+  }
+
+  // 4. Update local component state with saved data
+  setProducts((ps) =>
+    editingIndex === null
+      ? [productToSave, ...ps]
+      : ps.map((p, i) => (i === editingIndex ? productToSave : p))
+  );
+
+  setEditingIndex(null);
+  setProduct(productToSave);
+
+  // 5. Navigation & feedback
+  if (status === 'Live') {
+    go('Published');
+  } else {
+    tab('Products');
+    tell('Draft saved to database. Continue whenever you are ready.');
+  }
+}; 
+
+// it ends here
+
+const workflow=['Add Photos','Photo Review','Tell Your Story','Check Details','Listing Preview','Smart Pricing','Pricing Preview','Final Review']; const stage=workflow.includes(page)? page==='Add Photos'||page==='Photo Review'?1:page==='Tell Your Story'?2:page==='Check Details'?3:4:0;
  const authPage=['Welcome','Login','Sign Up','Forgot Password'].includes(page); const navVisible=!authPage&&!stage&&page!=='Published';
  const draft=products.find(p=>p.status==='Draft');
  const detailFields=()=> <div className="details">{(['name','category','material','size','craft'] as const).map(k=><Field key={k} label={({name:'Product Name',category:'Category',material:'Material',size:'Size',craft:'Craft / Technique'})[k]} value={product[k]} onChange={v=>update(k,v)} placeholder="Not specified"/>)}</div>;

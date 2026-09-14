@@ -11,7 +11,7 @@ export interface ProductInput {
   price?: string | number;
   quantity?: string | number;
   delivery?: string;
-  photo?: string;
+  photo?: string    ; // Holds the image URL once uploaded
   status?: string;
 }
 
@@ -21,23 +21,38 @@ export interface ServiceResponse<T = any> {
   error?: any;
 }
 
-export async function fetchProducts(): Promise<ServiceResponse> {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false });
+/**
+ * Uploads an image File to Supabase Storage and returns its public URL
+ */
+export async function uploadProductImage(file: File): Promise<ServiceResponse<string>> {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+  const filePath = `products/${fileName}`;
 
-  if (error) {
-    console.error('Error fetching products:', error.message);
-    return { success: false, data: [], error };
+  const { error: uploadError } = await supabase.storage
+    .from('product-images')
+    .upload(filePath, file);
+
+  if (uploadError) {
+    console.error('Error uploading image:', uploadError.message);
+    return { success: false, error: uploadError };
   }
 
-  return { success: true, data };
+  // Retrieve the public URL for the uploaded file
+  const { data } = supabase.storage
+    .from('product-images')
+    .getPublicUrl(filePath);
+
+  return { success: true, data: data.publicUrl };
 }
 
+/**
+ * Inserts the product record into the database
+ */
 export async function addProductToSupabase(
   product: ProductInput,
-  artisanId: string
+  artisanId: string,
+  imageUrl?: string
 ): Promise<ServiceResponse> {
   const payload = {
     artisan_id: artisanId,
@@ -51,7 +66,7 @@ export async function addProductToSupabase(
     price: product.price ? parseFloat(String(product.price)) : null,
     stock: product.quantity ? parseInt(String(product.quantity), 10) : 1,
     delivery: product.delivery || '',
-    image_url: product.photo || '',
+    image_url: imageUrl || product.photo || '',
     status: product.status || 'Draft'
   };
 
