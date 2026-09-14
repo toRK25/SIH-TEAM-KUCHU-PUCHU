@@ -1,3 +1,5 @@
+import { createArtisanProfile } from './lib/profileservices';
+import { supabase } from './lib/supabase';
 import { addProductToSupabase, uploadProductImage, ProductInput } from './lib/productservices';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Microphone, Camera, VideoCamera, Storefront, House, Bag, ChatCircleDots, User, Globe, Bell, Package, ChartBar, ArrowLeft, ArrowRight, CaretRight, Check, Plus, PencilSimple, Stop, UploadSimple, Sun, Crosshair, Image as ImageIcon, SignOut, Question, X, CheckCircle, Eye, Sparkle, QrCode, ChatText, Info, Phone, LockKey } from '@phosphor-icons/react';
