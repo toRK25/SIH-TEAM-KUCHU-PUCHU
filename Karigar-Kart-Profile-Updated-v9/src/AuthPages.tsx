@@ -1,3 +1,4 @@
+import { supabase } from './lib/supabase';
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Phone, LockKey, User, Palette, MapPin } from '@phosphor-icons/react';
 
@@ -114,7 +115,31 @@ export function LegacyAuth({ page, go, tab }: AuthProps & { page: 'Login' | 'Sig
     'Puducherry': ['Puducherry'],
   };
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   if (!/^\d{10}$/.test(mobile)) {
+  //     setError('Please enter a valid 10-digit mobile number.');
+  //     return;
+  //   }
+
+  //   if (!otpSent) {
+  //     setOtpSent(true);
+  //     setError('');
+  //     return;
+  //   }
+
+  //   if (!/^\d{6}$/.test(otp)) {
+  //     setError('Please enter the 6-digit OTP.');
+  //     return;
+  //   }
+
+  //   if (!isLogin && (!fullName.trim() || !termsAccepted)) {
+  //     setError('Please enter your name and accept Terms & Conditions.');
+  //     return;
+  //   }
+
+  //   tab('Home');
+  // };
+  const handleSubmit = async () => {
     if (!/^\d{10}$/.test(mobile)) {
       setError('Please enter a valid 10-digit mobile number.');
       return;
@@ -136,8 +161,52 @@ export function LegacyAuth({ page, go, tab }: AuthProps & { page: 'Login' | 'Sig
       return;
     }
 
-    tab('Home');
+    try {
+      if (!isLogin) {
+        // 1. Insert into profiles table
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              name: fullName,
+              role: artisan ? `Artisan (${artisan})` : 'Artisan',
+              language: 'English',
+            },
+          ])
+          .select();
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError.message);
+          setError('Failed to create profile: ' + profileError.message);
+          return;
+        }
+
+        const newProfile = profileData[0];
+
+        // 2. Insert into artisans table
+        if (newProfile?.id) {
+          const { error: artisanError } = await supabase.from('artisans').insert([
+            {
+              profile_id: newProfile.id,
+              craft_type: artisan || 'General Craft',
+              region: `${city ? city + ', ' : ''}${stateName}`,
+            },
+          ]);
+
+          if (artisanError) {
+            console.error('Error creating artisan entry:', artisanError.message);
+          }
+        }
+      }
+
+      // Proceed to main home view after successful saving
+      tab('Home');
+    } catch (err: any) {
+      console.error('Auth submit error:', err);
+      setError('Unexpected error: ' + err.message);
+    }
   };
+// it ends here
 
   return (
     <main className="legacy-auth-page legacy-form-page">
