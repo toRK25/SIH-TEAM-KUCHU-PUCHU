@@ -1,0 +1,8 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+python-multipart>=0.0.20,<1
+numpy>=1.26,<3
+Pillow>=10,<12
+opencv-python-headless==4.10.0.84
+rembg[gpu]>=2.0.61,<3
+onnxruntime-gpu>=1.21,<2
